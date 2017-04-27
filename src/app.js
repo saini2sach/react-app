@@ -1,48 +1,81 @@
 import React from 'react';
-
 import {render} from "react-dom";
+
+import "whatwg-fetch"; // this enable window.fetch or fetch to use, globally
+
 
 import {Contact} from "./components/Contact";
 import XYZ, {OurTeam} from "./components/About";
+import {Layout} from "./components/Layout";
+import {NotFound} from "./components/NotFound";
 
-// XYZ is import of default class, name can be anything with respect to exported class
-// OurTeam is import of normal class, name should be same as exported class
+import {Home} from "./components/Home";
+
+import {BrandList} from "./components/BrandList";
+
+import {ReduxEx} from "./components/ReduxEx";
+
+import {Router, Route, IndexRoute, hashHistory, browserHistory} from "react-router";
+
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+
+import productReducer from "./product/Reducer";
+
+import ProductList from "./product/components/ProductList";
+import ProductEdit from "./product/components/ProductEdit";
+
+let store = createStore(productReducer);
 
 class App extends React.Component {
-    render() { 
+    render() {
         let title = "React App";
-        return ( // this braces help for collecting whole components for return, like now we can write by giving new line 
-                <div> 
+        return (
+                <div>
                     <h1> {title} </h1>
                     <h2> WebPack here </h2>
 
+                    <Layout />
+                    
+                    {this.props.children}    {/*Similar to <router-outlet> of angular*/}
+                   
+                    {/*
                     <Contact/>
                     <XYZ/>
                     <OurTeam/>
+                    */}
                 </div>
                 )
     }
 }
 
-render(<App />, document.getElementById('app')); // it select an element with 'app' id and 
-                                        // then write the returned of APP class in innerHTML of that selected element 
+render(
+        <Provider store={store}>
+            <Router history={browserHistory}>
+                <Route path="/" component={App}> 
+                    <IndexRoute component={Home}/>
+                    
+                    <Route path="/about" component={XYZ} />
+                    <Route path="/contact" component={Contact} />
+                    <Route path="/brand" component={BrandList} /> 
+                    <Route path="/products" component={ProductList} />
+                    <Route path="/products/edit/:id" component={ProductEdit} /> 
+                    <Route path="/redux" component={ReduxEx} />                
+                    <Route path="*" component={NotFound} />
+                </Route>
+            </Router>
+        </Provider>
+        , document.getElementById('app')
+    );
+
+
+// render(<App />, document.getElementById('app'));
 
 /* 
+    --history-api-fallback is used for html5 histroy api fallback as now the url can be used for bookmarking, refreshing
+
     default exported class should be imported without curly braces and 
     can be named as anything no need to be the same name as export class name, 
     also in one JS files, there can be only one default class, all other should be without default
 
-*/
-
-/*
-    render() - it provides the whole return template to that class in which it is written, 
-    like if we import this App class in other components, then by writing <App/>, we got whole template there.!
-
-    interpolation - binding of variable can be done by {} 
-
-    return - for best practices, all content that should be returned, wrapped in a braces-(), 
-    that helps the case when we give a new line after return(as then content will be ignored)
-
-    Also we can return only one element, so all collection should be wrapped in a parent element
-    and then it should be returned.
 */

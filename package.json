@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "http-server -c-1 -p 8080 .",
     "webpack": "webpack --config webpack.config.js --watch --progress",
-    "start": "webpack-dev-server --hot --inline",
+    "start": "webpack-dev-server --hot --inline --history-api-fallback",
     "api": "node server/api-server.js",
     "api-with-auth": "node server/api-server.js authEnabled",
     "api-nocors": "node server/api-server.js noCors"
