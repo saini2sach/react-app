@@ -3,6 +3,8 @@ var path = require('path');
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 var BUILD_DIR = path.resolve(__dirname, 'dist');
 var APP_DIR = path.resolve(__dirname, 'src');
 
@@ -40,6 +42,12 @@ var config = {
         // this assumes your vendor imports exist in the node_modules directory
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
+    }),
+
+    new UglifyJSPlugin({
+      mangle: true,
+      compress: true,
+      comments: false
     }),
 
     new CopyWebpackPlugin([{

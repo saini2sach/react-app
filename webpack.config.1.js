@@ -1,8 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-
 var BUILD_DIR = path.resolve(__dirname, 'dist');
 var APP_DIR = path.resolve(__dirname, 'src');
 
@@ -16,10 +14,16 @@ var config = {
       'lodash'
     ]
   },
+
+  /* vendor: [
+      'react',
+      'react-dom'
+    ]
+  } ,
   output: {
     path: BUILD_DIR,
     filename: '[name].bundle.js'
-  },
+  }, */
 
   devtool: 'source-map',
 
@@ -41,16 +45,6 @@ var config = {
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
     }),
-
-    new CopyWebpackPlugin([{
-        from: '../assets',
-        to: BUILD_DIR + '/assets'
-      },
-      {
-        from: "../index.html",
-        to: BUILD_DIR
-      }
-    ])
   ]
 };
 

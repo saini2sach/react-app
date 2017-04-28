@@ -18,14 +18,56 @@ import {ReduxEx} from "./components/ReduxEx";
 import {Router, Route, IndexRoute, hashHistory, browserHistory} from "react-router";
 
 import {Provider} from "react-redux";
-import {createStore} from "redux";
+import {createStore, combineReducers, applyMiddleware} from "redux";
 
 import productReducer from "./product/Reducer";
+import {cartReducer} from "./cart"; // it check index file in cart folder and searches for cartReducer implicitly
+import {cartRoutes} from "./cart";
+
 
 import ProductList from "./product/components/ProductList";
 import ProductEdit from "./product/components/ProductEdit";
+import ProductView from "./product/containers/ProductViewContainer";
 
-let store = createStore(productReducer);
+
+let rootReducer = combineReducers({
+    productState: productReducer,
+    cartState: cartReducer
+});
+
+
+var loggerMiddleWare = function logger(store) {
+  return function (next) {
+    return function (action) {
+      console.log('logger dispatching', action);
+      var result = next(action);
+      console.log('logger next state', store.getState());
+      return result;
+    };
+  };
+};
+import {cartMiddleWare} from "./cart";
+
+let cartData = [];
+
+if(window.localStorage.Shopping_Cart_Data) {
+    cartData = JSON.parse(window.localStorage.Shopping_Cart_Data);
+}
+
+import thunk from "redux-thunk";
+
+let store = createStore(rootReducer, {cartState: cartData}, applyMiddleware(thunk, loggerMiddleWare, cartMiddleWare));
+
+function forThunk(dispatch) {
+    console.log("thunk called..!", dispatch);
+    
+}
+
+store.dispatch(forThunk);
+
+const Test = ({title}) => (
+    <h1>Test - {title}</h1>
+)
 
 class App extends React.Component {
     render() {
@@ -35,6 +77,8 @@ class App extends React.Component {
                     <h1> {title} </h1>
                     <h2> WebPack here </h2>
 
+                    <Test title="Hello..!" />
+                    
                     <Layout />
                     
                     {this.props.children}    {/*Similar to <router-outlet> of angular*/}
@@ -49,6 +93,7 @@ class App extends React.Component {
     }
 }
 
+
 render(
         <Provider store={store}>
             <Router history={browserHistory}>
@@ -60,8 +105,11 @@ render(
                     <Route path="/brand" component={BrandList} /> 
                     <Route path="/products" component={ProductList} />
                     <Route path="/products/edit/:id" component={ProductEdit} /> 
+                    <Route path="/products/view/:id" component={ProductView} /> 
+                    {cartRoutes}
                     <Route path="/redux" component={ReduxEx} />                
                     <Route path="*" component={NotFound} />
+
                 </Route>
             </Router>
         </Provider>

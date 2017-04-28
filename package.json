@@ -7,6 +7,8 @@
     "serve": "http-server -c-1 -p 8080 .",
     "webpack": "webpack --config webpack.config.js --watch --progress",
     "start": "webpack-dev-server --hot --inline --history-api-fallback",
+    "build": "webpack --config webpack.config.js",
+    "release": "webpack --config webpack.config.prod.js",    
     "api": "node server/api-server.js",
     "api-with-auth": "node server/api-server.js authEnabled",
     "api-nocors": "node server/api-server.js noCors"
@@ -32,7 +34,7 @@
     "jquery": "^2.2.4",
     "json-server": "^0.8.14",
     "jwt-simple": "^0.5.0",
-    "lodash": "^4.16.2",
+    "lodash": "^4.17.4",
     "moment": "^2.15.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -56,6 +58,7 @@
     "babel-preset-stage-3": "^6.17.0",
     "babel-runtime": "^6.20.0",
     "clean-webpack-plugin": "^0.1.15",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
     "enzyme": "^2.7.0",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -67,6 +70,7 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
   }

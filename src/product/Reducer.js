@@ -12,27 +12,32 @@ export default function (state = initialState, action) {
 
     switch(action.type) {
         case ActionType.INIT_PRODUCTS: {
-            return {
-                products: action.products,
-                loading: state.loading,
-                product: state.product
-            }
+            // return {
+            //     products: action.products,
+            //     loading: state.loading,
+            //     product: state.product
+            // }
+            return Object.assign({}, state, {products: action.products});
         }
 
         case ActionType.LOADING: {
-            return {
-                products: action.products,
-                loading: action.loading,
-                product: state.product
-            }
+            // return {
+            //     products: state.products,
+            //     loading: action.loading,
+            //     product: state.product
+            // }
+            return Object.assign({}, state, {loading: action.loading});
+            
         }
 
         case ActionType.EDIT_PRODUCT: {
-            return {
-                product:action.product,
-                loading: state.loading,
-                products: state.products
-            }
+            // return {
+            //     product:action.product,
+            //     loading: state.loading,
+            //     products: state.products
+            // }
+            return Object.assign({}, state, {product: action.product});
+            
         }
 
         default: 

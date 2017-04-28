@@ -23,7 +23,7 @@ store.subscribe( () => {
     // console.log("state subscribed: ", store.getState())
 })
 
-store.dispatch({
+store.dispatch({ // adding some kind of action to state-reducer
     type: 'ADD_MEMBER',
     value: 'react'
 })
@@ -43,7 +43,7 @@ function addMemberActionCreator(a) {
 store.dispatch(addMemberActionCreator("Via Redux"));
 
 setInterval( () => {
-    store.dispatch(addMemberActionCreator("Random No. : "+ Math.random()));
+    store.dispatch(addMemberActionCreator("Random No. : "+ (Math.random().toPrecision(2) > 0.5 ? 1: 0 )));
 }, 10000);
 
 export class ReduxEx extends React.Component {

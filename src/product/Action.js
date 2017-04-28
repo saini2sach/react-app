@@ -22,4 +22,18 @@ export const editProduct = (product) => {
         type: ActionType.EDIT_PRODUCT,
         product
     }
+};
+
+export const fetchProducts = () => {
+  return (dispatch) => {
+    dispatch(loadingProducts(true));
+
+    fetch("http://localhost:7070/api/products")
+    .then (response => response.json())
+    .then (products => {
+        console.warn("Dispatching init")
+        dispatch(loadingProducts(false));
+        dispatch(initProducts(products))
+    })
+  }
 }
